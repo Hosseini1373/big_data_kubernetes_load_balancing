@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: test-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: test-app
+    spec:
+      containers:
+      - name: flask
+        image: eeerer/acces_point_server:latest
+        imagePullPolicy: Always
+        ports:
+        -  containerPort: 5000
+           name: test-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-app
+  labels:
+    app: test-app
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: test-app
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-app
+spec:
+  rules:
+  - host: test.questionpdf.init-lab.ch
+    http: 
+      paths:
+      - backend:
+          service:
+            name: test-app
+            port:
+              number: 5000
+        path: /
+        pathType: Prefix

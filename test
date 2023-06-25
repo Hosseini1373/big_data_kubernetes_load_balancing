@@ -1,0 +1,35 @@
+import PyPDF2
+
+# with open('D:/AI/2021_Book_PatternRecognitionAndComputerV.pdf', 'rb') as f:
+#     text = PyPDF2.PdfReader(f)
+#     x = len(text.pages)
+#     for i in range(x):
+#         pages = text.pages[i-1]
+#         text2 = pages.extract_text()
+#         with open(r"tester.txt","a",encoding='utf_32') as f2:
+#             f2.write(text2)
+
+
+import PyPDF2
+
+# Open the PDF File
+pdf_file = open('D:/AI/2021_Book_PatternRecognitionAndComputerV.pdf', 'rb')  # Replace with your PDF file path
+
+# Create a PDF Reader Object
+pdf_reader = PyPDF2.PdfReader(pdf_file)
+
+# Get the total number of pages in the document
+total_pages = len(pdf_reader.pages)
+
+# Extract text from each page
+pdf_text = []
+
+for page in range(total_pages):
+    text = pdf_reader.pages[page].extract_text()
+    pdf_text.append(text)
+
+# Close the PDF File
+pdf_file.close()
+
+with open(r"tester.txt","w",encoding='utf_8') as f2:
+    f2.write(str(pdf_text))
